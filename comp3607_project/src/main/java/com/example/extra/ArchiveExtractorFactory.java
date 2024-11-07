@@ -1,4 +1,4 @@
-package com.example;
+package com.example.extra;
 
 public class ArchiveExtractorFactory {
 

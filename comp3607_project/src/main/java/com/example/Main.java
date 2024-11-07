@@ -1,38 +1,39 @@
 package com.example;
 
-import java.util.logging.Logger;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.logging.*;
+
+import com.example.extractionclasses.ZipExtractor;
+import com.example.extractionclasses.SubmissionFolder;
+import com.example.extractionclasses.SubmissionFolderBuilder;
+
+import java.io.File;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
         LOGGER.info("Hello Thank you for using our application");
-        LOGGER.info("Please submit all zipped submissions to the Submissions Folder");
 
-        // Implement the the input of zipped files here
-        String dirPath = "comp3607_project\\src\\main\\resources\\Submissions";
+        // Specify the directory path where the zip files are stored
 
-        // create a Path object for the directory
-        Path directory = Paths.get(dirPath);
+        File zipFile = new File("C:\\Users\\andre\\OneDrive\\Desktop\\test.zip");
+
+        // Create an instance of SubmissionFolderBuilder and Extractor
+        ZipExtractor zipExtractor = new ZipExtractor();
+        SubmissionFolderBuilder folderBuilder = new SubmissionFolderBuilder();
 
         try {
-            // use Files.list() to get a stream of files in the directory
-            List<String> zipFileList = Files.list(directory)
-                    .filter(file -> file.toString().endsWith(".zip"))
-                    .map(Path::getFileName)
-                    .map(Path::toString)
-                    .collect(Collectors.toList());
+            // Extract the zip files into the specified directory
+            File extractedFolder = zipExtractor.extract(zipFile);
+            LOGGER.info("Extracted to: " + extractedFolder.getAbsolutePath());
 
-            // print the list of zip file names
-            System.out.println(zipFileList);
-        } catch (IOException e) {
-            // handle exception
+            // Build the submission folder
+            SubmissionFolder rootFolder = folderBuilder.buildFolder(extractedFolder);
+
+            // Run tests on the submission folder
+            rootFolder.runTests();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error extracting zip file: {0}", e.getMessage());
         }
     }
 }

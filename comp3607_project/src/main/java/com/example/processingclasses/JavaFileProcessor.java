@@ -1,10 +1,10 @@
-package com.example;
+package com.example.processingclasses;
 
 public class JavaFileProcessor implements FileProcessor {
 
     @Override
     public void processFile(String filePath) {
-        // TODO: Implement JavaFileProcessor
+        // Process Java files
 
     }
 }
