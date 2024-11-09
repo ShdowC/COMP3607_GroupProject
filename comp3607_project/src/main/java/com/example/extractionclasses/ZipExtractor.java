@@ -5,71 +5,60 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.io.BufferedOutputStream;
 
 public class ZipExtractor {
-
-    /**
-     * Extracts the given zip file to a temporary directory.
-     *
-     * @param zipFile the zip file to be extracted
-     * @return the root directory of the extracted files
-     * @throws IOException if an I/O error occurs
-     */
     public File extract(File zipFile) throws IOException {
         // Create a temporary directory to store the extracted files
         Path tempDir = Files.createTempDirectory("extracted_submissions");
 
-        // Open the zip file as a ZipInputStream
-        try (ZipInputStream zipIn = new ZipInputStream(Files.newInputStream(zipFile.toPath()))) {
-            ZipEntry entry;
+        // Create a queue to hold the zip files that need to be extracted
+        Queue<File> zipFilesToExtract = new LinkedList<>();
+        zipFilesToExtract.add(zipFile);
 
-            // Process each entry in the zip file
-            while ((entry = zipIn.getNextEntry()) != null) {
-                // Determine the file path of the extracted entry
-                Path filePath = tempDir.resolve(entry.getName());
+        while (!zipFilesToExtract.isEmpty()) {
+            File currentZipFile = zipFilesToExtract.poll();
 
-                if (entry.isDirectory()) {
-                    // If it's a directory, create the directory
-                    Files.createDirectories(filePath);
-                } else {
-                    // If it's a file, extract it
-                    if (entry.getName().endsWith(".zip")) {
-                        // If it's a zip file, recursively extract it
-                        extract(filePath.toFile());
+            // Open the zip file as a ZipInputStream
+            try (ZipInputStream zipIn = new ZipInputStream(Files.newInputStream(currentZipFile.toPath()))) {
+                ZipEntry entry;
+
+                // Process each entry in the zip file
+                while ((entry = zipIn.getNextEntry()) != null) {
+                    String entryName = entry.getName();
+                    Path entryPath = tempDir.resolve(entryName);
+
+                    if (entry.isDirectory()) {
+                        // Create the directory if it doesn't exist
+                        Files.createDirectories(entryPath);
                     } else {
-                        extractFile(zipIn, filePath);
-                    }
-                }
+                        // Extract the file
+                        try (BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(entryPath))) {
+                            byte[] bytesIn = new byte[4096];
+                            int read = 0;
+                            while ((read = zipIn.read(bytesIn)) != -1) {
+                                bos.write(bytesIn, 0, read);
+                            }
+                        }
 
-                // Close the current entry
-                zipIn.closeEntry();
+                        // If the file is a zip file, add it to the queue to extract
+                        if (entryName.endsWith(".zip")) {
+                            zipFilesToExtract.add(entryPath.toFile());
+                        }
+                    }
+
+                    zipIn.closeEntry();
+                }
             }
         }
 
         // Return the root directory of the extracted files
         return tempDir.toFile();
-    }
-
-    /**
-     * Extracts a single file from the ZipInputStream to the specified file path.
-     *
-     * @param zipIn    the ZipInputStream from which to read the file data
-     * @param filePath the path to where the file should be extracted
-     * @throws IOException if an I/O error occurs
-     */
-    private void extractFile(ZipInputStream zipIn, Path filePath) throws IOException {
-        // Ensure the parent directory exists
-        Files.createDirectories(filePath.getParent());
-
-        // Write the file contents from the zip stream to the destination file
-        try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = zipIn.read(buffer)) != -1) {
-                fos.write(buffer, 0, bytesRead);
-            }
-        }
     }
 }

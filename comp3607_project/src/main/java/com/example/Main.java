@@ -16,7 +16,7 @@ public class Main {
 
         // Specify the directory path where the zip files are stored
 
-        File zipFile = new File("C:\\Users\\andre\\OneDrive\\Desktop\\test.zip");
+        File zipFile = new File("D:\\UWI Assignments\\OOP\\Project\\Submisisons.zip");
 
         // Create an instance of SubmissionFolderBuilder and Extractor
         ZipExtractor zipExtractor = new ZipExtractor();

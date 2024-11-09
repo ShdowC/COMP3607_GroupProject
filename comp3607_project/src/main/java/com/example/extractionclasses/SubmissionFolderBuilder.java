@@ -30,26 +30,7 @@ public class SubmissionFolderBuilder {
             }
         }
 
-        logFolderStructure(folder, 0);
         return folder;
     }
 
-    private void logFolderStructure(SubmissionFolder folder, int indentLevel) {
-        LOGGER.info(getIndent(indentLevel) + folder.getName());
-        for (SubmissionComponent component : folder.getChildren()) {
-            if (component instanceof SubmissionFolder) {
-                logFolderStructure((SubmissionFolder) component, indentLevel + 1);
-            } else {
-                LOGGER.info(getIndent(indentLevel + 1) + component.getName());
-            }
-        }
-    }
-
-    private String getIndent(int level) {
-        StringBuilder indent = new StringBuilder();
-        for (int i = 0; i < level; i++) {
-            indent.append("  ");
-        }
-        return indent.toString();
-    }
 }
