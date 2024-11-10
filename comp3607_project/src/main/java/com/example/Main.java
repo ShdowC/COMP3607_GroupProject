@@ -1,14 +1,12 @@
 package com.example;
 
-import java.util.logging.*;
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.example.extractionclasses.ZipExtractor;
 import com.example.extractionclasses.SubmissionFolder;
 import com.example.extractionclasses.SubmissionFolderBuilder;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.example.extractionclasses.ZipExtractor;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
@@ -17,9 +15,8 @@ public class Main {
         LOGGER.info("Hello Thank you for using our application");
 
         // Specify the directory path where the zip files are stored
-        Path zipFilePath = Paths.get("C:", "Users", "andre", "OneDrive", "Documents", "GitHub", "COMP3607_GroupProject",
-                "comp3607_project", "src", "main", "resources", "Submisisons.zip");
-        File zipFile = zipFilePath.toFile();
+       // Path zipFilePath = ("/Users/latoyapaul/Documents/GitHub/COMP3607_GroupProject/comp3607_project/src/main/resources/Submisisons.zip");
+        File zipFile = new File("/Users/latoyapaul/Documents/GitHub/COMP3607_GroupProject/comp3607_project/src/main/resources/Submisisons.zip");
 
         // Create an instance of SubmissionFolderBuilder and Extractor
         ZipExtractor zipExtractor = new ZipExtractor();
