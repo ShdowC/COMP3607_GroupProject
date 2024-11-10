@@ -6,7 +6,6 @@ import com.example.extractionclasses.ZipExtractor;
 import com.example.processingclasses.JavaFileProcessor;
 import com.example.extractionclasses.SubmissionFolder;
 import com.example.extractionclasses.SubmissionFolderBuilder;
-import com.example.testclasses.TestObserver;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -20,7 +19,7 @@ public class Main {
 
         // Specify the directory path where the zip files are stored
         Path zipFilePath = Paths.get("C:", "Users", "andre", "OneDrive", "Documents", "GitHub", "COMP3607_GroupProject",
-                "comp3607_project", "src", "main", "resources", "Andre_Persad_816005989_A1.zip");
+                "comp3607_project", "src", "main", "resources", "Submissions.zip");
         File zipFile = zipFilePath.toFile();
 
         // Create an instance of SubmissionFolderBuilder and Extractor
