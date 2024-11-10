@@ -5,8 +5,17 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.example.testclasses.TestObserver;
+import com.example.testclasses.TestSubject;
+
 public class SubmissionFolderBuilder {
     private static final Logger LOGGER = Logger.getLogger(SubmissionFolderBuilder.class.getName());
+
+    private TestSubject testSubject = new TestSubject();
+
+    public void addObserver(TestObserver observer) {
+        testSubject.addObserver(observer);
+    }
 
     public SubmissionFolder buildFolder(File directory) {
 
@@ -30,6 +39,7 @@ public class SubmissionFolderBuilder {
             }
         }
 
+        testSubject.notifyObservers(folder);
         return folder;
     }
 

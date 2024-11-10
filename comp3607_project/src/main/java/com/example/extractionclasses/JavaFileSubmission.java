@@ -13,6 +13,10 @@ public class JavaFileSubmission implements SubmissionComponent {
         this.file = file;
     }
 
+    public File getFile() {
+        return file;
+    }
+
     @Override
     public String getName() {
         return name;

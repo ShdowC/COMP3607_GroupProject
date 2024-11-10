@@ -1,7 +1,6 @@
 package com.example.extractionclasses;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,8 +8,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.io.BufferedOutputStream;
 
 public class ZipExtractor {
