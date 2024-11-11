@@ -1,8 +1,6 @@
 package com.example.extractionclasses;
 
 import java.io.File;
-import java.util.logging.Logger;
-
 import com.example.testclasses.TestObserver;
 import com.example.testclasses.TestSubject;
 

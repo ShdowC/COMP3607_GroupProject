@@ -21,15 +21,15 @@ public class SubmissionFolder implements SubmissionComponent {
     }
 
     public List<SubmissionComponent> getChildren() {
-        List<SubmissionComponent> children = new ArrayList<>();
+        List<SubmissionComponent> childComponents = new ArrayList<>();
         for (SubmissionComponent child : this.children) {
             if (child instanceof SubmissionFolder) {
-                children.addAll(((SubmissionFolder) child).getChildren());
+                childComponents.addAll(((SubmissionFolder) child).getChildren());
             } else {
-                children.add(child);
+                childComponents.add(child);
             }
         }
-        return children;
+        return childComponents;
     }
 
     @Override

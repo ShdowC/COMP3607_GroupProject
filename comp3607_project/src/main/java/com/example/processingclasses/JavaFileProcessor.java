@@ -18,13 +18,14 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 public class JavaFileProcessor implements TestObserver {
     private static final Logger LOGGER = Logger.getLogger(JavaFileProcessor.class.getName());
     private JavaFileParser parser = new JavaFileParser();
+    private List<String> classNames = new ArrayList<>();
 
     @Override
     public void update(SubmissionFolder submissionFolder) {
         // Process the submission folder
         LOGGER.info("Processing submission folder: " + submissionFolder.getName());
         List<File> javaFiles = getJavaFilesFromSubmissionFolder(submissionFolder);
-        processJavaFiles(javaFiles);
+        classNames = processJavaFiles(javaFiles);
         processJavaMethods(javaFiles);
     }
 
@@ -39,17 +40,19 @@ public class JavaFileProcessor implements TestObserver {
         return javaFiles;
     }
 
-    private List<String> processJavaFiles(List<File> javaFiles) {
+    public List<String> processJavaFiles(List<File> javaFiles) {
         List<String> attributes = new ArrayList<>();
         for (File javaFile : javaFiles) {
             try {
                 List<ClassOrInterfaceDeclaration> classes = parser.parseClasses(javaFile);
+                List<String> fileAttributes = new ArrayList<>(); // Create a new list for each file
                 for (ClassOrInterfaceDeclaration clazz : classes) {
                     List<FieldDeclaration> fields = parser.parseFields(clazz);
                     for (FieldDeclaration field : fields) {
-                        attributes.add(field.getVariables().get(0).getNameAsString());
+                        fileAttributes.add(field.getVariables().get(0).getNameAsString());
                     }
                 }
+                attributes.addAll(fileAttributes); // Add the file attributes to the main list
             } catch (Exception e) {
                 String message = "Error parsing Java file: " + javaFile.getName();
                 LOGGER.log(Level.SEVERE, message, e);
@@ -58,7 +61,7 @@ public class JavaFileProcessor implements TestObserver {
         return attributes;
     }
 
-    private List<String> processJavaMethods(List<File> javaFiles) {
+    public List<String> processJavaMethods(List<File> javaFiles) {
         List<String> attributes = new ArrayList<>();
         for (File javaFile : javaFiles) {
             try {
@@ -78,4 +81,9 @@ public class JavaFileProcessor implements TestObserver {
         }
         return attributes;
     }
+
+    public List<String> getClassNames() {
+        return classNames;
+    }
+
 }
