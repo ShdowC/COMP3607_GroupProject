@@ -34,6 +34,9 @@ public class ZipExtractor {
                     if (entry.isDirectory()) {
                         // Create the directory if it doesn't exist
                         Files.createDirectories(entryPath);
+                    } else if (entryName.endsWith(".zip")) {
+                        // Recursively extract the zip file
+                        extractZipFile(entryPath, zipIn);
                     } else {
                         // Extract the file
                         try (BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(entryPath))) {
@@ -42,11 +45,6 @@ public class ZipExtractor {
                             while ((read = zipIn.read(bytesIn)) != -1) {
                                 bos.write(bytesIn, 0, read);
                             }
-                        }
-
-                        // If the file is a zip file, add it to the queue to extract
-                        if (entryName.endsWith(".zip")) {
-                            zipFilesToExtract.add(entryPath.toFile());
                         }
                     }
 
@@ -57,5 +55,45 @@ public class ZipExtractor {
 
         // Return the root directory of the extracted files
         return tempDir.toFile();
+    }
+
+    private void extractZipFile(Path entryPath, ZipInputStream zipIn) throws IOException {
+        // Create a temporary zip file
+        Path tempZipFile = Files.createTempFile("temp", ".zip");
+        try (BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(tempZipFile))) {
+            byte[] bytesIn = new byte[4096];
+            int read = 0;
+            while ((read = zipIn.read(bytesIn)) != -1) {
+                bos.write(bytesIn, 0, read);
+            }
+        }
+
+        // Recursively extract the zip file
+        try (ZipInputStream nestedZipIn = new ZipInputStream(Files.newInputStream(tempZipFile))) {
+            ZipEntry nestedEntry;
+            while ((nestedEntry = nestedZipIn.getNextEntry()) != null) {
+                String nestedEntryName = nestedEntry.getName();
+                Path nestedEntryPath = entryPath.resolve(nestedEntryName);
+
+                if (nestedEntry.isDirectory()) {
+                    // Create the directory if it doesn't exist
+                    Files.createDirectories(nestedEntryPath);
+                } else {
+                    // Extract the file
+                    try (BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(nestedEntryPath))) {
+                        byte[] bytesIn = new byte[4096];
+                        int read = 0;
+                        while ((read = nestedZipIn.read(bytesIn)) != -1) {
+                            bos.write(bytesIn, 0, read);
+                        }
+                    }
+                }
+
+                nestedZipIn.closeEntry();
+            }
+        } finally {
+            // Delete the temporary zip file
+            Files.delete(tempZipFile);
+        }
     }
 }

@@ -1,0 +1,11 @@
+# Feature 1: Class Name
+class_name: MyClass
+
+# Feature 2: Method Signature
+method_signature: public void myMethod(int, String)
+
+# Feature 3: Field Type
+field_type: private int myField
+
+# Feature 4: Inheritance Hierarchy
+inheritance_hierarchy: MyClass extends MyParentClass
