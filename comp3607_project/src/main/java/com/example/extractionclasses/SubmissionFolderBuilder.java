@@ -1,6 +1,9 @@
 package com.example.extractionclasses;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.testclasses.TestObserver;
 import com.example.testclasses.TestSubject;
 
@@ -13,7 +16,6 @@ public class SubmissionFolderBuilder {
     }
 
     public SubmissionFolder buildFolder(File directory) {
-
         SubmissionFolder folder = new SubmissionFolder(directory.getName());
         for (File file : directory.listFiles()) {
             if (file.isDirectory()) {
@@ -23,7 +25,11 @@ public class SubmissionFolderBuilder {
             }
         }
 
-        testSubject.notifyObservers(folder);
+        // Notify observers with a list of submission folders
+        List<SubmissionFolder> submissionFolders = new ArrayList<>();
+        submissionFolders.add(folder);
+        testSubject.notifyObservers(submissionFolders);
+
         return folder;
     }
 

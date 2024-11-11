@@ -1,7 +1,9 @@
 package com.example.testclasses;
 
+import java.util.List;
+
 import com.example.extractionclasses.SubmissionFolder;
 
 public interface TestObserver {
-    void update(SubmissionFolder submissionFolder);
+    void update(List<SubmissionFolder> submissionFolders);
 }

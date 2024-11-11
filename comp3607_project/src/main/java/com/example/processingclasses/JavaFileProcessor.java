@@ -19,14 +19,19 @@ public class JavaFileProcessor implements TestObserver {
     private static final Logger LOGGER = Logger.getLogger(JavaFileProcessor.class.getName());
     private JavaFileParser parser = new JavaFileParser();
     private List<String> classNames = new ArrayList<>();
+    private List<String> classMethodNames = new ArrayList<>();
 
     @Override
-    public void update(SubmissionFolder submissionFolder) {
-        // Process the submission folder
-        LOGGER.info("Processing submission folder: " + submissionFolder.getName());
-        List<File> javaFiles = getJavaFilesFromSubmissionFolder(submissionFolder);
-        classNames = processJavaFiles(javaFiles);
-        processJavaMethods(javaFiles);
+    public void update(List<SubmissionFolder> submissionFolders) {
+        for (SubmissionFolder submissionFolder : submissionFolders) {
+            // Process the submission folder
+            LOGGER.info("Processing submission folder: " + submissionFolder.getName());
+            List<File> javaFiles = getJavaFilesFromSubmissionFolder(submissionFolder);
+            classNames = processJavaFiles(javaFiles);
+            classMethodNames = processJavaMethods(javaFiles);
+            System.out.println("Class Names: " + classNames);
+            System.out.println("Class Method Names: " + classMethodNames);
+        }
     }
 
     private List<File> getJavaFilesFromSubmissionFolder(SubmissionFolder submissionFolder) {
@@ -45,14 +50,12 @@ public class JavaFileProcessor implements TestObserver {
         for (File javaFile : javaFiles) {
             try {
                 List<ClassOrInterfaceDeclaration> classes = parser.parseClasses(javaFile);
-                List<String> fileAttributes = new ArrayList<>(); // Create a new list for each file
                 for (ClassOrInterfaceDeclaration clazz : classes) {
                     List<FieldDeclaration> fields = parser.parseFields(clazz);
                     for (FieldDeclaration field : fields) {
-                        fileAttributes.add(field.getVariables().get(0).getNameAsString());
+                        attributes.add(field.getVariables().get(0).getNameAsString());
                     }
                 }
-                attributes.addAll(fileAttributes); // Add the file attributes to the main list
             } catch (Exception e) {
                 String message = "Error parsing Java file: " + javaFile.getName();
                 LOGGER.log(Level.SEVERE, message, e);
