@@ -1,15 +1,14 @@
 package com.example;
 
-import java.util.logging.*;
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.example.extractionclasses.ZipExtractor;
 import com.example.processingclasses.JavaFileProcessor;
+
 import com.example.extractionclasses.SubmissionFolder;
 import com.example.extractionclasses.SubmissionFolderBuilder;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.example.extractionclasses.ZipExtractor;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
@@ -22,6 +21,7 @@ public class Main {
                 "comp3607_project", "src", "main", "resources", "Submissions.zip");
 
         File zipFile = zipFilePath.toFile();
+
 
         // Create an instance of SubmissionFolderBuilder and Extractor
         ZipExtractor zipExtractor = new ZipExtractor();
