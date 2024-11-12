@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.example.processingclasses.JavaFileProcessor;
+
 import com.example.extractionclasses.SubmissionFolder;
 import com.example.extractionclasses.SubmissionFolderBuilder;
 import com.example.extractionclasses.ZipExtractor;
@@ -15,12 +17,17 @@ public class Main {
         LOGGER.info("Hello Thank you for using our application");
 
         // Specify the directory path where the zip files are stored
-       // Path zipFilePath = ("/Users/latoyapaul/Documents/GitHub/COMP3607_GroupProject/comp3607_project/src/main/resources/Submisisons.zip");
-        File zipFile = new File("/Users/latoyapaul/Documents/GitHub/COMP3607_GroupProject/comp3607_project/src/main/resources/Submisisons.zip");
+        Path zipFilePath = Paths.get("C:", "Users", "andre", "OneDrive", "Documents", "GitHub", "COMP3607_GroupProject",
+                "comp3607_project", "src", "main", "resources", "Submissions.zip");
+
+        File zipFile = zipFilePath.toFile();
+
 
         // Create an instance of SubmissionFolderBuilder and Extractor
         ZipExtractor zipExtractor = new ZipExtractor();
         SubmissionFolderBuilder folderBuilder = new SubmissionFolderBuilder();
+        JavaFileProcessor processor = new JavaFileProcessor();
+        folderBuilder.addObserver(processor);
 
         try {
             // Extract the zip files into the specified directory
