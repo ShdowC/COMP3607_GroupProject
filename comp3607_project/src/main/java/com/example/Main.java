@@ -16,13 +16,11 @@ public class Main {
 
     public static void main(String[] args) {
         LOGGER.info("Hello Thank you for using our application");
-        /*
-         * 
-         * 
-         */
+
         // Specify the directory path where the zip files are stored
         Path zipFilePath = Paths.get("C:", "Users", "andre", "OneDrive", "Documents", "GitHub", "COMP3607_GroupProject",
                 "comp3607_project", "src", "main", "resources", "Submissions.zip");
+
         File zipFile = zipFilePath.toFile();
 
         // Create an instance of SubmissionFolderBuilder and Extractor
