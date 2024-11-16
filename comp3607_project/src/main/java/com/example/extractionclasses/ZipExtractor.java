@@ -1,6 +1,5 @@
 package com.example.extractionclasses;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,19 +10,19 @@ import java.util.zip.ZipInputStream;
 import java.io.BufferedOutputStream;
 
 public class ZipExtractor {
-    public File extract(File zipFile) throws IOException {
+    public Path extract(Path zipPath) throws IOException {
         // Create a temporary directory to store the extracted files
         Path tempDir = Files.createTempDirectory("extracted_submissions");
 
         // Create a queue to hold the zip files that need to be extracted
-        Queue<File> zipFilesToExtract = new LinkedList<>();
-        zipFilesToExtract.add(zipFile);
+        Queue<Path> zipPathsToExtract = new LinkedList<>();
+        zipPathsToExtract.add(zipPath);
 
-        while (!zipFilesToExtract.isEmpty()) {
-            File currentZipFile = zipFilesToExtract.poll();
+        while (!zipPathsToExtract.isEmpty()) {
+            Path currentZipPath = zipPathsToExtract.poll();
 
             // Open the zip file as a ZipInputStream
-            try (ZipInputStream zipIn = new ZipInputStream(Files.newInputStream(currentZipFile.toPath()))) {
+            try (ZipInputStream zipIn = new ZipInputStream(Files.newInputStream(currentZipPath))) {
                 ZipEntry entry;
 
                 // Process each entry in the zip file
@@ -54,7 +53,7 @@ public class ZipExtractor {
         }
 
         // Return the root directory of the extracted files
-        return tempDir.toFile();
+        return tempDir;
     }
 
     private void extractZipFile(Path entryPath, ZipInputStream zipIn) throws IOException {

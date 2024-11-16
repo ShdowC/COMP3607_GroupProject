@@ -2,6 +2,7 @@ package com.example.extractionclasses;
 
 //Leaf Class
 import java.io.File;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
 public class JavaFileSubmission implements SubmissionComponent {
@@ -10,9 +11,9 @@ public class JavaFileSubmission implements SubmissionComponent {
     private File file;
     private static final Logger LOGGER = Logger.getLogger(JavaFileSubmission.class.getName());
 
-    public JavaFileSubmission(String name, File file) {
+    public JavaFileSubmission(String name, Path path) {
         this.name = name;
-        this.file = file;
+        this.file = path.toFile();
     }
 
     public File getFile() {
@@ -24,11 +25,9 @@ public class JavaFileSubmission implements SubmissionComponent {
         return name;
     }
 
-    // Method to run tests on the Java file
     @Override
     public void runTests() {
-        // Logic to run tests on the Java file
-        LOGGER.info("Running test on Java file: " + file.getName());
+        LOGGER.info("Running tests on " + name);
     }
 
 }
