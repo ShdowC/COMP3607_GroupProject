@@ -3,10 +3,12 @@ package com.example.extractionclasses;
 //Composite Class
 import java.util.ArrayList;
 import java.util.List;
+import com.example.evaluation.TestResult;
 
 public class SubmissionFolder implements SubmissionComponent {
     private String name;
     private List<SubmissionComponent> children = new ArrayList<>();
+    private List<TestResult> testResults = new ArrayList<>();
 
     public SubmissionFolder(String name) {
         this.name = name;
@@ -30,6 +32,14 @@ public class SubmissionFolder implements SubmissionComponent {
             }
         }
         return childComponents;
+    }
+
+    public void addTestResult(TestResult testResult) {
+        testResults.add(testResult);
+    }
+
+    public List<TestResult> getTestResults() {
+        return testResults;
     }
 
     @Override

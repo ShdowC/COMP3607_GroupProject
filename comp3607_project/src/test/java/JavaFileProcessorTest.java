@@ -14,19 +14,6 @@ import java.util.List;
 import com.example.extractionclasses.SubmissionFolder;
 import com.example.processingclasses.JavaFileProcessor;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.example.extractionclasses.JavaFileSubmission;
-import com.example.extractionclasses.SubmissionComponent;
-import com.example.extractionclasses.SubmissionFolder;
-import com.example.processingclasses.JavaFileProcessor;
-
 public class JavaFileProcessorTest {
     @Test
     public void testUpdate_EmptyList() {

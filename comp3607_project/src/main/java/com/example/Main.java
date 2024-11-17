@@ -5,10 +5,18 @@ import com.example.extractionclasses.ZipExtractor;
 import com.example.processingclasses.JavaFileProcessor;
 import com.example.extractionclasses.SubmissionFolder;
 import com.example.extractionclasses.SubmissionFolderBuilder;
+
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Arrays;
+import com.example.evaluation.TestResult;
+
+import com.example.evaluation.Evaluator;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
@@ -39,8 +47,12 @@ public class Main {
             submissionFolders.add(rootFolder);
             processor.update(submissionFolders);
 
+            // Evaluate the submission folder
+            rootFolder.runTests();
+
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error extracting zip file: {0}", e.getMessage());
         }
     }
+
 }

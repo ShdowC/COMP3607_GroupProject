@@ -33,9 +33,9 @@ public class JavaFileProcessor implements TestObserver {
                     List<String> classNames = processJavaFile(javaFile);
                     List<String> classMethodNames = processJavaMethods(javaFile);
                     List<String> classFieldNames = processJavaFields(javaFile);
-                    System.out.println("Class Names: " + classNames);
-                    System.out.println("Class Method Names: " + classMethodNames);
-                    System.out.println("Class Field Names: " + classFieldNames);
+                    // System.out.println("Class Names: " + classNames);
+                    // System.out.println("Class Method Names: " + classMethodNames);
+                    // System.out.println("Class Field Names: " + classFieldNames);
                 }
             }
         }
