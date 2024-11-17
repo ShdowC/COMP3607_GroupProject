@@ -1,12 +1,14 @@
 package com.example.evaluation;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 public class TestResult {
     private File javaFile;
     private boolean methodsPresent;
     private boolean attributesPresent;
     private String resultSummary;
+    private static final Logger LOGGER = Logger.getLogger(TestResult.class.getName());
 
     public TestResult() {
         // Default constructor

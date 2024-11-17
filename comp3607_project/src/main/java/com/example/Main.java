@@ -4,10 +4,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.example.processingclasses.JavaFileProcessor;
-
+import com.itextpdf.text.pdf.PdfWriter;
 import com.example.extractionclasses.SubmissionFolder;
 import com.example.extractionclasses.SubmissionFolderBuilder;
 import com.example.extractionclasses.ZipExtractor;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class Main {
         try {
             // Extract the zip files into the specified directory
             Path extractedFolder = zipExtractor.extract(zipFilePath);
+
             LOGGER.log(Level.INFO, "Extracted to: {0}", extractedFolder.toAbsolutePath());
 
             // Build the submission folder
