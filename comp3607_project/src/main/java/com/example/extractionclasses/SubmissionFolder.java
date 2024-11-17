@@ -1,9 +1,11 @@
 package com.example.extractionclasses;
 
+import java.io.File;
 //Composite Class
 import java.util.ArrayList;
 import java.util.List;
 import com.example.evaluation.TestResult;
+import com.example.pdf.GeneratePdfReport;
 
 public class SubmissionFolder implements SubmissionComponent {
     private String name;

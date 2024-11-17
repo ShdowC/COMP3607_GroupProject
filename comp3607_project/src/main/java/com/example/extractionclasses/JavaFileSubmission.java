@@ -15,18 +15,13 @@ import java.util.Arrays;
 import java.util.List;
 import com.example.evaluation.TestResult;
 import com.example.pdf.GeneratePdfReport;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.util.logging.Level;
-import java.nio.file.Paths;
 
 public class JavaFileSubmission implements SubmissionComponent {
 
     private String name;
     private File file;
     private Map<String, RequiredClassInfo> requiredClassInfo = new HashMap<>();
+    List<TestResult> testResults = new ArrayList<>();
     private static final Logger LOGGER = Logger.getLogger(JavaFileSubmission.class.getName());
 
     public JavaFileSubmission(String name, Path path) {
@@ -81,12 +76,11 @@ public class JavaFileSubmission implements SubmissionComponent {
 
         // Evaluate the Java file
         TestResult testResult = evaluator.evaluateJavaFile(this.file, requiredClassInfo);
+        testResults.add(testResult);
 
         // Generate PDF report
-        List<TestResult> testResults = new ArrayList<>();
-        testResults.add(testResult);
         String studentId = getStudentIdFromFolderName();
-        generatePdfReport(testResults, studentId, file.getParentFile());
+        generatePdfReport(this.testResults, studentId, file.getParentFile());
 
         // Do something with the testResult
         LOGGER.info(testResult.getResultSummary());

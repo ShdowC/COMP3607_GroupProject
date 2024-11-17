@@ -10,6 +10,7 @@ import java.util.zip.ZipInputStream;
 import java.io.BufferedOutputStream;
 
 public class ZipExtractor {
+
     public Path extract(Path zipPath) throws IOException {
         // Create a temporary directory to store the extracted files
         Path tempDir = Files.createTempDirectory("extracted_submissions");
