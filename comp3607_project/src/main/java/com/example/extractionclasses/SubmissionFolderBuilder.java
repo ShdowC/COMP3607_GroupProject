@@ -1,6 +1,9 @@
 package com.example.extractionclasses;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +18,18 @@ public class SubmissionFolderBuilder {
         testSubject.addObserver(observer);
     }
 
-    public SubmissionFolder buildFolder(File directory) {
-        SubmissionFolder folder = new SubmissionFolder(directory.getName());
-        for (File file : directory.listFiles()) {
-            if (file.isDirectory()) {
-                folder.add(buildFolder(file));
-            } else {
-                folder.add(new JavaFileSubmission(file.getName(), file));
+    public SubmissionFolder buildFolder(Path directory) {
+        SubmissionFolder folder = new SubmissionFolder(directory.getFileName().toString());
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory)) {
+            for (Path entry : stream) {
+                if (Files.isDirectory(entry)) {
+                    folder.add(buildFolder(entry));
+                } else {
+                    folder.add(new JavaFileSubmission(entry.getFileName().toString(), entry));
+                }
             }
+        } catch (IOException e) {
+            // Handle the exception
         }
 
         // Notify observers with a list of submission folders
@@ -32,5 +39,4 @@ public class SubmissionFolderBuilder {
 
         return folder;
     }
-
 }
