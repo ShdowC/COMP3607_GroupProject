@@ -16,15 +16,62 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Scanner;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
         LOGGER.info("Hello Thank you for using our application");
 
-        // Specify the directory path where the zip files are stored
-        Path zipFilePath = Paths.get("C:", "Users", "andre", "OneDrive", "Documents", "GitHub", "COMP3607_GroupProject",
-                "comp3607_project", "src", "main", "resources", "SubmissionFolder.zip");
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Zip Files", "zip");
+        fileChooser.setFileFilter(filter);
+        fileChooser.setDialogTitle("Select a ZIP File");
+        Scanner scanner = new Scanner(System.in);
+        
+        Path zipFilePath = null;
+        File zipFile = null;
+        boolean running = true;
+        
+        System.out.println("======================================================================================");
+        System.out.println("Hello! Welcome to Object-Oriented Programming I Assignment Auto Grader!");
+        System.out.println("Please Enter 'select' to choose a ZIP file or 'exit' to quit the application.");
+        System.out.println("======================================================================================");
+
+        while (running) {
+
+            System.out.print(" > Enter command: ");
+            String command = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+
+            switch (command) {
+                case "select":
+                    int result = fileChooser.showOpenDialog(null);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        zipFile = fileChooser.getSelectedFile();
+                        System.out.println("Selected file: " + zipFile.getAbsolutePath());
+                        zipFilePath = Paths.get(fileChooser.getSelectedFile().getAbsolutePath());
+                        running = false;
+                    }
+                    else {
+                        System.out.println(" > File selection cancelled.\n");
+                    }
+                    break;
+                case "exit":
+                    System.out.println("======================================================================================");
+                    System.out.println(" > Exiting the application... Goodbye!");
+                    System.out.println("======================================================================================");
+                    running = false;
+                    scanner.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println(" > Unknown command. Please enter 'select' or 'exit'.\n");
+            }   
+        }
+        scanner.close();
 
         // Create an instance of SubmissionFolderBuilder and Extractor
         ZipExtractor zipExtractor = new ZipExtractor();
