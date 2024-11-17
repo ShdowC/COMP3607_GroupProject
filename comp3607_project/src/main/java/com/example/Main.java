@@ -1,22 +1,17 @@
 package com.example;
 
-import java.util.logging.*;
-import com.example.extractionclasses.ZipExtractor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.example.processingclasses.JavaFileProcessor;
+
 import com.example.extractionclasses.SubmissionFolder;
 import com.example.extractionclasses.SubmissionFolderBuilder;
-
-import java.io.File;
+import com.example.extractionclasses.ZipExtractor;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Arrays;
-import com.example.evaluation.TestResult;
-
-import com.example.evaluation.Evaluator;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
